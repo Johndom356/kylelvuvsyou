@@ -1,16 +1,5 @@
 local StarterGui = game:GetService("StarterGui")
 StarterGui:SetCore("SendNotification",{
   Title = "Blatant",
-  Text = "Version = 1, Thanks for using my script!"
+  Text = "-------"
 })
-if Script then
-  StarterGui:SetCore("SendNotification",{
-    Title = "Blatant",
-    Text = "ok_loadinc"
-  })
-else
-  StarterGui:SetCore("SendNotification",{
-    Title = "Variable Not Found",
-    Text = "[Script] Variable"
-  })
-end
