@@ -1,3 +1,4 @@
+local Angle = 0
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
@@ -11,9 +12,19 @@ local Visualizer = {Instance.new("Part",workspace),{
   Transparency = 1,
   Size = Vector3.new(1,1,1),
   Color = Color3.fromRGB(255,0,0)
+},Instance.new("Part",workspace),{
+  Anchored = true,
+  CanCollide = false,
+  Material = Enum.Material.ForceField,
+  Transparency = 0,
+  Size = Vector3.new(0.25,0.25,0),
+  Color = Color3.fromRGB(255,0,0)
 }}
 for Index,Value in pairs(Visualizer[2]) do
   Visualizer[1][Index] = Value
+end
+for Index,Value in pairs(Visualizer[4]) do
+  Visualizer[3][Index] = Value
 end
 RunService.PostSimulation:Connect(function(DeltaTime)
   if Configuration[4][2][1] == true then
@@ -111,7 +122,7 @@ RunService.PostSimulation:Connect(function(DeltaTime)
               local Position = HumanoidRootPart.Position
               local MousePos = Vector3.new(Position.X+(AssemblyLinearVelocity.X*Configuration__AssemblyLinearVelocity[1]),Position.Y+(AssemblyLinearVelocity.Y*Configuration__AssemblyLinearVelocity[2]),Position.Z+(AssemblyLinearVelocity.Z*Configuration__AssemblyLinearVelocity[3]))
               local OverlapParameters = OverlapParams.new()
-              local Excluded = {Visualizer}
+              local Excluded = {Visualizer[1],Visualizer[3]}
               for Index,Value in pairs(Players:GetPlayers()) do
                 local Character = Value.Character
                 if Character then
@@ -119,14 +130,19 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                 end
               end
               OverlapParameters:AddToFilter(Excluded)
-              local GetPartBoundsInBox = workspace:GetPartBoundsInBox(CFrame.new(MousePos),Vector3.new(1,1,1),OverlapParameters)
+              local GetPartBoundsInBox = workspace:GetPartBoundsInBox(CFrame.new(MousePos),HumanoidRootPart.Size,OverlapParameters)
               if Configuration[5][1] == true then
                 if table.getn(GetPartBoundsInBox) == 0 then
                   MainEvent:FireServer("UpdateMousePos",{
                     MousePos = MousePos,
                     Camera = MousePos
                   })
-                  Visualizer[1].Position = MousePos
+                  if Configuration[4][4] == true then
+                    Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                    LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                  end
+                  Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                  Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
                     CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
@@ -137,7 +153,12 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                     MousePos = MousePos,
                     Camera = MousePos
                   })
-                  Visualizer[1].Position = MousePos
+                  if Configuration[4][4] == true then
+                    Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                    LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                  end
+                  Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                  Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
                     CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
@@ -148,7 +169,12 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   MousePos = MousePos,
                   Camera = MousePos
                 })
-                Visualizer[1].Position = MousePos
+                if Configuration[4][4] == true then
+                  Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                  LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                end
+                Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                Visualizer[1].Size = HumanoidRootPart.Size
                 if Configuration[4][3] == true then
                   local CurrentCamera = workspace.CurrentCamera
                   CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
@@ -215,7 +241,7 @@ RunService.PostSimulation:Connect(function(DeltaTime)
               local Position = HumanoidRootPart.Position
               local MousePos = Vector3.new(Position.X+(AssemblyLinearVelocity.X*Configuration__AssemblyLinearVelocity[1]),Position.Y+(AssemblyLinearVelocity.Y*Configuration__AssemblyLinearVelocity[2]),Position.Z+(AssemblyLinearVelocity.Z*Configuration__AssemblyLinearVelocity[3]))
               local OverlapParameters = OverlapParams.new()
-              local Excluded = {Visualizer}
+              local Excluded = {Visualizer[1],Visualizer[3]}
               for Index,Value in pairs(Players:GetPlayers()) do
                 local Character = Value.Character
                 if Character then
@@ -223,14 +249,19 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                 end
               end
               OverlapParameters:AddToFilter(Excluded)
-              local GetPartBoundsInBox = workspace:GetPartBoundsInBox(CFrame.new(MousePos),Vector3.new(1,1,1),OverlapParameters)
+              local GetPartBoundsInBox = workspace:GetPartBoundsInBox(CFrame.new(MousePos),HumanoidRootPart.Size,OverlapParameters)
               if Configuration[5][1] == true then
                 if table.getn(GetPartBoundsInBox) == 0 then
                   MainEvent:FireServer("UpdateMousePos",{
                     MousePos = MousePos,
                     Camera = MousePos
                   })
-                  Visualizer[1].Position = MousePos
+                  if Configuration[4][4] == true then
+                    Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                    LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                  end
+                  Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                  Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
                     CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
@@ -241,7 +272,12 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                     MousePos = MousePos,
                     Camera = MousePos
                   })
-                  Visualizer[1].Position = MousePos
+                  if Configuration[4][4] == true then
+                    Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                    LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                  end
+                  Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                  Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
                     CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
@@ -252,12 +288,51 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   MousePos = MousePos,
                   Camera = MousePos
                 })
-                Visualizer[1].Position = MousePos
+                if Configuration[4][4] == true then
+                  Angle = Angle+Configuration[5][3][1]*DeltaTime/Configuration[5][3][2]
+                  LocalHumanoidRootPart.CFrame = CFrame.new(MousePos+Vector3.new(math.sin(Angle)*Configuration[5][3][2],Configuration[5][3][3],math.cos(Angle)*Configuration[5][3][2]),MousePos)
+                end
+                Visualizer[1].CFrame = CFrame.new(MousePos,MousePos+HumanoidRootPart.CFrame.LookVector)
+                Visualizer[1].Size = HumanoidRootPart.Size
                 if Configuration[4][3] == true then
                   local CurrentCamera = workspace.CurrentCamera
                   CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
                 end
               end
+            end
+          end
+        end
+      end
+    end
+  end
+  if Configuration[4][5] == true then
+    local Character = LocalPlayer.Character
+    if Character then
+      local Head = Character:FindFirstChild("Head")
+      if Head then
+        local BodyEffects = Character:FindFirstChild("BodyEffects")
+        if BodyEffects then
+          local MousePos = BodyEffects:FindFirstChild("MousePos")
+          if MousePos then
+            MousePos = MousePos.Value
+            Visualizer[3].Size = Vector3.new(0.25,0.25,(Head.Position-MousePos).Magnitude)
+            Visualizer[3].CFrame = CFrame.new(Head.Position,MousePos)*CFrame.new(0,0,-(Head.Position-MousePos).Magnitude/2)
+          end
+        end
+      end
+    end
+  end
+  if Configuration[5][2] == true then
+    local Character = LocalPlayer.Character
+    if Character then
+      for Index,Value in pairs(Character:GetChildren()) do
+        if Value:IsA("Tool") then
+          local Ammo = Value:FindFirstChild("Ammo")
+          local MaxAmmo = Value:FindFirstChild("MaxAmmo")
+          if Ammo and MaxAmmo then
+            Ammo = Ammo.Value
+            if Ammo == 0 then
+              MainEvent:FireServer("Reload",Value)
             end
           end
         end
@@ -274,6 +349,12 @@ local Tools = {{Instance.new("Tool",LocalPlayer.Backpack),{
 }},{Instance.new("Tool",LocalPlayer.Backpack),{
   RequiresHandle = false,
   Name = "Blatant (3)"
+}},{Instance.new("Tool",LocalPlayer.Backpack),{
+  RequiresHandle = false,
+  Name = "Blatant (4)"
+}},{Instance.new("Tool",LocalPlayer.Backpack),{
+  RequiresHandle = false,
+  Name = "Blatant (5)"
 }}}
 LocalPlayer.CharacterRemoving:Connect(function()
   for Index,Value in pairs(Tools) do
@@ -343,14 +424,12 @@ end)
 Tools[2][1].Activated:Connect(function()
   if Configuration[4][2][1] == false then
     Configuration[4][2][1] = true
-    Configuration[4][3] = true
     StarterGui:SetCore("SendNotification",{
       Title = "Blatant (Version 3)",
       Text = "Resolver Enabled"
     })
   else
     Configuration[4][2][1] = false
-    Configuration[4][3] = true
     StarterGui:SetCore("SendNotification",{
       Title = "Blatant (Version 3)",
       Text = "Resolver Disabled"
@@ -372,7 +451,25 @@ Tools[3][1].Activated:Connect(function()
     })
   end
 end)
+Tools[4][1].Activated:Connect(function()
+  if Configuration[4][4] == false then
+    Configuration[4][4] = true
+    print(Configuration[4][4])
+  else
+    Configuration[4][4] = false
+    print(Configuration[4][4])
+  end
+end)
+Tools[5][1].Activated:Connect(function()
+  if Configuration[4][5] == false then
+    Configuration[4][5] = true
+    Visualizer[3].Transparency = 0
+  else
+    Configuration[4][5] = false
+    Visualizer[3].Transparency = 1
+  end
+end)
 StarterGui:SetCore("SendNotification",{
   Title = "hi!",
-  Text = "made by khushiiu/xqzzvv. @xqzzvv on discord!"
+  Text = "made by khushiiu/xqzzvv. @xqzzvv on discord! ty."
 })
