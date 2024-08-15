@@ -1,3 +1,58 @@
+local Configuration = {
+  {
+    [16] = 0.1444444444,
+    [32] = 0.1444444444/1.259,
+    [48] = 0.1444444444/1.549,
+    [64] = 0.1444444444/1.759,
+    [80] = 0.1444444444/2.049,
+    [96] = 0.1444444444/2.259,
+    [112] = 0.1444444444/2.549,
+    [128] = 0.1444444444/2.759
+  },
+  {
+    [16] = 0.1444444444,
+    [32] = 0.1444444444/1.259,
+    [48] = 0.1444444444/1.549,
+    [64] = 0.1444444444/1.759,
+    [80] = 0.1444444444/2.049,
+    [96] = 0.1444444444/2.259,
+    [112] = 0.1444444444/2.549,
+    [128] = 0.1444444444/2.759
+  },
+  {
+    [16] = 0.1444444444,
+    [32] = 0.1444444444/1.259,
+    [48] = 0.1444444444/1.549,
+    [64] = 0.1444444444/1.759,
+    [80] = 0.1444444444/2.049,
+    [96] = 0.1444444444/2.259,
+    [112] = 0.1444444444/2.549,
+    [128] = 0.1444444444/2.759
+  },
+  {
+    [1] = nil,
+    [2] = {
+      false,
+      {
+        
+      }
+    },
+    [3] = true,
+    [4] = false,
+    [5] = true,
+    [6] = false
+  },
+  {
+    true,
+    true,
+    {
+      180,
+      12,
+      0
+    },
+    6.5
+  }
+}
 local Angle = 0
 local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
@@ -60,8 +115,9 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                 HumanoidRootPart.Position,
                 Configuration[4][2][2][Value.UserId][2]
               }
+              local AssemblyLinearVelocity = (Position[1]-Position[2])/DeltaTime
               Configuration[4][2][2][Value.UserId][2] = Position[1]
-              Configuration[4][2][2][Value.UserId][1] = Vector3.new((Position[1]-Position[2]).X*(1/DeltaTime),(Position[1]-Position[2]).Y*(1/DeltaTime),(Position[1]-Position[2]).Z*(1/DeltaTime))
+              Configuration[4][2][2][Value.UserId][1] = Configuration[4][2][2][Value.UserId][1]*(1-math.clamp(AssemblyLinearVelocity.Magnitude/187,0.01,0.99))+((Position[1]-Position[2])/DeltaTime)*math.clamp(AssemblyLinearVelocity.Magnitude/187,0.01,0.99)
             end
           end
         end
@@ -145,7 +201,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
-                    CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
+                    local DeltaTime = RunService.PreRender:Wait()
+                    CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,Position),Configuration[5][4]*DeltaTime)
                   end
                 else
                   MousePos = Vector3.new(MousePos.X,Position.Y,MousePos.Z)
@@ -161,7 +218,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
-                    CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
+                    local DeltaTime = RunService.PreRender:Wait()
+                    CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,Position),Configuration[5][4]*DeltaTime)
                   end
                 end
               else
@@ -177,7 +235,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                 Visualizer[1].Size = HumanoidRootPart.Size
                 if Configuration[4][3] == true then
                   local CurrentCamera = workspace.CurrentCamera
-                  CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,Position)
+                  local DeltaTime = RunService.PreRender:Wait()
+                  CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,Position),Configuration[5][4]*DeltaTime)
                 end
               end
             end
@@ -264,7 +323,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
-                    CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
+                    local DeltaTime = RunService.PreRender:Wait()
+                    CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos),Configuration[5][4]*DeltaTime)
                   end
                 else
                   MousePos = Vector3.new(MousePos.X,Position.Y,MousePos.Z)
@@ -280,7 +340,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                   Visualizer[1].Size = HumanoidRootPart.Size
                   if Configuration[4][3] == true then
                     local CurrentCamera = workspace.CurrentCamera
-                    CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
+                    local DeltaTime = RunService.PreRender:Wait()
+                    CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos),Configuration[5][4]*DeltaTime)
                   end
                 end
               else
@@ -296,7 +357,8 @@ RunService.PostSimulation:Connect(function(DeltaTime)
                 Visualizer[1].Size = HumanoidRootPart.Size
                 if Configuration[4][3] == true then
                   local CurrentCamera = workspace.CurrentCamera
-                  CurrentCamera.CFrame = CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos)
+                  local DeltaTime = RunService.PreRender:Wait()
+                  CurrentCamera.CFrame = CurrentCamera.CFrame:Lerp(CFrame.lookAt(CurrentCamera.CFrame.Position,MousePos),Configuration[5][4]*DeltaTime)
                 end
               end
             end
@@ -317,6 +379,32 @@ RunService.PostSimulation:Connect(function(DeltaTime)
             MousePos = MousePos.Value
             Visualizer[3].Size = Vector3.new(0.25,0.25,(Head.Position-MousePos).Magnitude)
             Visualizer[3].CFrame = CFrame.new(Head.Position,MousePos)*CFrame.new(0,0,-(Head.Position-MousePos).Magnitude/2)
+            if Configuration[4][1] ~= nil then
+              Character = Configuration[4][1].Character
+              if Character then
+                HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+                if HumanoidRootPart then
+                  local OverlapParameters = OverlapParams.new()
+                  OverlapParameters:AddToFilter({
+                    Visualizer[1],
+                    Visualizer[3]
+                  })
+                  local GetPartBoundsInBox = workspace:GetPartBoundsInBox(CFrame.new(MousePos),HumanoidRootPart.Size,OverlapParameters)
+                  if #GetPartBoundsInBox >= 1 then
+                    for Index,Value in pairs(GetPartBoundsInBox) do
+                      if Value == HumanoidRootPart then
+                        Visualizer[3].Color = Color3.fromRGB(0,255,0)
+                        break
+                      else
+                        Visualizer[3].Color = Color3.fromRGB(255,0,0)
+                      end
+                    end
+                  else
+                    Visualizer[3].Color = Color3.fromRGB(255,0,0)
+                  end
+                end
+              end
+            end
           end
         end
       end
@@ -339,6 +427,19 @@ RunService.PostSimulation:Connect(function(DeltaTime)
       end
     end
   end
+  if Configuration[4][6] == true then
+    local Character = LocalPlayer.Character
+    if Character then
+      local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+      if HumanoidRootPart then
+        local Recorded = HumanoidRootPart.AssemblyLinearVelocity
+        HumanoidRootPart.AssemblyLinearVelocity = Vector3.new(1,1,1)*(2^14)
+        HumanoidRootPart.CFrame = HumanoidRootPart.CFrame*CFrame.Angles(0,0.0001,0)
+        RunService.PreRender:Wait()
+        HumanoidRootPart.AssemblyLinearVelocity = Recorded
+      end
+    end
+  end
 end)
 local Tools = {{Instance.new("Tool",LocalPlayer.Backpack),{
   RequiresHandle = false,
@@ -346,130 +447,4 @@ local Tools = {{Instance.new("Tool",LocalPlayer.Backpack),{
 }},{Instance.new("Tool",LocalPlayer.Backpack),{
   RequiresHandle = false,
   Name = "Blatant (2)"
-}},{Instance.new("Tool",LocalPlayer.Backpack),{
-  RequiresHandle = false,
-  Name = "Blatant (3)"
-}},{Instance.new("Tool",LocalPlayer.Backpack),{
-  RequiresHandle = false,
-  Name = "Blatant (4)"
-}},{Instance.new("Tool",LocalPlayer.Backpack),{
-  RequiresHandle = false,
-  Name = "Blatant (5)"
-}}}
-LocalPlayer.CharacterRemoving:Connect(function()
-  for Index,Value in pairs(Tools) do
-    Value[1].Parent = LocalPlayer.Backpack
-  end
-end)
-for Index,Value1 in pairs(Tools) do
-  for Index,Value2 in pairs(Value1[2]) do
-    Value1[1][Index] = Value2
-  end
-end
-Tools[1][1].Activated:Connect(function()
-  if Configuration[4][1] == nil then
-    local Position = Mouse.Hit.Position
-    local Nearest = {
-      {}
-    }
-    for Index,Value in pairs(Players:GetPlayers()) do
-      if Value ~= LocalPlayer then
-        local Character = Value.Character
-        if Character then
-          local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
-          if HumanoidRootPart then
-            Nearest[1][table.getn(Nearest[1])+1] = {
-              HumanoidRootPart,
-              Value
-            }
-          end
-        end
-      end
-    end
-    for Index,Value in pairs(Nearest[1]) do
-      local Magnitude = (Value[1].Position-Position).Magnitude
-      if Nearest[2] == nil then
-        Nearest[2] = {
-          Value[1],
-          Value[2],
-          Magnitude
-        }
-      else
-        if Nearest[2][3] >= Magnitude then
-          Nearest[2] = {
-            Value[1],
-            Value[2],
-            Magnitude
-          }
-        end
-      end
-    end
-    if Nearest[2] ~= nil then
-      Configuration[4][1] = Nearest[2][2]
-      StarterGui:SetCore("SendNotification",{
-        Title = "Blatant (Version 3)",
-        Text = Nearest[2][2].DisplayName
-      })
-      Visualizer[1].Transparency = 0
-    end
-  else
-    Configuration[4][1] = nil
-    StarterGui:SetCore("SendNotification",{
-      Title = "Blatant (Version 3)",
-      Text = "Unlocked"
-    })
-    Visualizer[1].Transparency = 1
-  end
-end)
-Tools[2][1].Activated:Connect(function()
-  if Configuration[4][2][1] == false then
-    Configuration[4][2][1] = true
-    StarterGui:SetCore("SendNotification",{
-      Title = "Blatant (Version 3)",
-      Text = "Resolver Enabled"
-    })
-  else
-    Configuration[4][2][1] = false
-    StarterGui:SetCore("SendNotification",{
-      Title = "Blatant (Version 3)",
-      Text = "Resolver Disabled"
-    })
-  end
-end)
-Tools[3][1].Activated:Connect(function()
-  if Configuration[4][3] == false then
-    Configuration[4][3] = true
-    StarterGui:SetCore("SendNotification",{
-      Title = "Blatant (Version 3)",
-      Text = "View At Enabled"
-    })
-  else
-    Configuration[4][3] = false
-    StarterGui:SetCore("SendNotification",{
-      Title = "Blatant (Version 3)",
-      Text = "View At Disabled"
-    })
-  end
-end)
-Tools[4][1].Activated:Connect(function()
-  if Configuration[4][4] == false then
-    Configuration[4][4] = true
-    print(Configuration[4][4])
-  else
-    Configuration[4][4] = false
-    print(Configuration[4][4])
-  end
-end)
-Tools[5][1].Activated:Connect(function()
-  if Configuration[4][5] == false then
-    Configuration[4][5] = true
-    Visualizer[3].Transparency = 0
-  else
-    Configuration[4][5] = false
-    Visualizer[3].Transparency = 1
-  end
-end)
-StarterGui:SetCore("SendNotification",{
-  Title = "hi!",
-  Text = "made by khushiiu/xqzzvv. @xqzzvv on discord! ty."
-})
+}},{Instance
