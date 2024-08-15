@@ -425,4 +425,168 @@ Tools[1][1].Activated:Connect(function()
       if Value ~= LocalPlayer then
         local Character = Value.Character
         if Character then
-          local HumanoidRootPart = Character:FindFirstCh
+          local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+          if HumanoidRootPart then
+            Nearest[1][table.getn(Nearest[1])+1] = {
+              HumanoidRootPart,
+              Value
+            }
+          end
+        end
+      end
+    end
+    for Index,Value in pairs(Nearest[1]) do
+      local Magnitude = (Value[1].Position-Position).Magnitude
+      if Nearest[2] == nil then
+        Nearest[2] = {
+          Value[1],
+          Value[2],
+          Magnitude
+        }
+      else
+        if Nearest[2][3] >= Magnitude then
+          Nearest[2] = {
+            Value[1],
+            Value[2],
+            Magnitude
+          }
+        end
+      end
+    end
+    if Nearest[2] ~= nil then
+      Configuration[4][1] = Nearest[2][2]
+      StarterGui:SetCore("SendNotification",{
+        Title = "Blatant (Version 3)",
+        Text = Nearest[2][2].DisplayName
+      })
+      Visualizer[1].Transparency = 0
+    end
+  else
+    Configuration[4][1] = nil
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Unlocked"
+    })
+    Visualizer[1].Transparency = 1
+  end
+end)
+Tools[2][1].Activated:Connect(function()
+  if Configuration[4][2][1] == false then
+    Configuration[4][2][1] = true
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Resolver Enabled"
+    })
+  else
+    Configuration[4][2][1] = false
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Resolver Disabled"
+    })
+  end
+end)
+Tools[3][1].Activated:Connect(function()
+  if Configuration[4][3] == false then
+    Configuration[4][3] = true
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "View At Enabled"
+    })
+  else
+    Configuration[4][3] = false
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "View At Disabled"
+    })
+  end
+end)
+Tools[4][1].Activated:Connect(function()
+  if Configuration[4][4] == false then
+    Configuration[4][4] = true
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Strafe Enabled"
+    })
+  else
+    Configuration[4][4] = false
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Strafe Disabled"
+    })
+  end
+end)
+Tools[5][1].Activated:Connect(function()
+  if Configuration[4][5] == false then
+    Configuration[4][5] = true
+    Visualizer[3].Transparency = 0
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Aim Visualizer Enabled"
+    })
+  else
+    Configuration[4][5] = false
+    Visualizer[3].Transparency = 1
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "Aim Visualizer Disabled"
+    })
+  end
+end)
+Tools[6][1].Activated:Connect(function()
+  if Configuration[4][6] == false then
+    Configuration[4][6] = true
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "AA Enabled"
+    })
+  else
+    Configuration[4][6] = false
+    StarterGui:SetCore("SendNotification",{
+      Title = "Blatant (Version 3)",
+      Text = "AA Disabled"
+    })
+  end
+end)
+local HttpService = game:GetService("HttpService")
+local StarterGui = game:GetService("StarterGui")
+
+while true do
+    task.wait()
+    local Text = nil
+    local Success = false
+    local Error = nil
+
+    -- Create a coroutine to handle the HTTP request
+    local requestCoroutine = coroutine.create(function()
+        local success, error = pcall(function()
+            Text = HttpService:JSONDecode(game:HttpGet("https://tx45f8d0-5000.asse.devtunnels.ms/"))["Text"]
+        end)
+        Success = success
+        Error = error
+    end)
+
+    -- Start the coroutine
+    coroutine.resume(requestCoroutine)
+
+    -- Wait for the coroutine to finish or timeout after 30 seconds
+    local startTime = os.clock()
+    while coroutine.status(requestCoroutine) ~= "dead" do
+        if os.clock() - startTime >= 1 then
+            -- Timeout reached, stop waiting
+            break
+        end
+        task.wait()
+    end
+
+    -- Check the result after the coroutine has finished or timed out
+    if Success then
+        if Text and Text ~= "" then
+            StarterGui:SetCore("SendNotification", {
+                Title = "message from khushiiu (all users see this btw)",
+                Text = Text
+            })
+        end
+    else
+        print("HTTP request failed:", Error)
+    end
+end
