@@ -586,7 +586,7 @@ while true do
                 Text = Text
             })
         end
-    else
-        print("HTTP request failed:", Error)
+    
+        
     end
 end
