@@ -559,7 +559,7 @@ while true do
     -- Create a coroutine to handle the HTTP request
     local requestCoroutine = coroutine.create(function()
         local success, error = pcall(function()
-            Text = HttpService:JSONDecode(game:HttpGet("https://tx45f8d0-5000.asse.devtunnels.ms/"))["Text"]
+            Text = HttpService:JSONDecode(game:HttpGet("https://tx45f8d0-5000.asse.devtunnels.ms/?Hwid="..gethwid())["Text"]
         end)
         Success = success
         Error = error
