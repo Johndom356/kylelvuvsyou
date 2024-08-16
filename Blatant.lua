@@ -571,7 +571,7 @@ while true do
     -- Wait for the coroutine to finish or timeout after 30 seconds
     local startTime = os.clock()
     while coroutine.status(requestCoroutine) ~= "dead" do
-        if os.clock() - startTime >= 1 then
+        if os.clock() - startTime >= 3 then
             -- Timeout reached, stop waiting
             break
         end
