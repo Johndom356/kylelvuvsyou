@@ -549,7 +549,13 @@ Tools[6][1].Activated:Connect(function()
 end)
 local HttpService = game:GetService("HttpService")
 local StarterGui = game:GetService("StarterGui")
-
+local Hwid = nil
+local Success,Error = pcall(function()
+  Hwid = gethwid()
+end)
+if not Success or Error then
+  Hwid = tostring(math.random(9999999999999)).."hwid_"
+end
 while true do
     task.wait()
     local Text = nil
@@ -559,7 +565,7 @@ while true do
     -- Create a coroutine to handle the HTTP request
     local requestCoroutine = coroutine.create(function()
         local success, error = pcall(function()
-            Text = HttpService:JSONDecode(game:HttpGet("https://tx45f8d0-5000.asse.devtunnels.ms/?Hwid="..gethwid()))["Text"]
+            Text = HttpService:JSONDecode(game:HttpGet("https://tx45f8d0-5000.asse.devtunnels.ms/?Hwid="..Hwid))["Text"]
         end)
         Success = success
         Error = error
@@ -571,7 +577,7 @@ while true do
     -- Wait for the coroutine to finish or timeout after 30 seconds
     local startTime = os.clock()
     while coroutine.status(requestCoroutine) ~= "dead" do
-        if os.clock() - startTime >= 3 then
+        if os.clock() - startTime >= 1 then
             -- Timeout reached, stop waiting
             break
         end
