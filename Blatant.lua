@@ -588,7 +588,7 @@ while true do
     if Success then
         if Text and Text ~= "" then
             StarterGui:SetCore("SendNotification", {
-                Title = "message from khushiiu (all users see this btw)",
+                Title = "message from kyle (all users see this btw)",
                 Text = Text
             })
         end
